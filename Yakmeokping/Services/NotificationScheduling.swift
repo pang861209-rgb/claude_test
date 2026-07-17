@@ -91,9 +91,9 @@ enum NotificationScheduling {
     static func followUpMessage(index: Int) -> (title: String, body: String) {
         switch index {
         case 0:
-            return ("핑핑이가 아직 기다리고 있어요 🥺", "바빴지? 지금이라도 딱 한 장! 📸")
+            return ("\(Branding.characterName)가 아직 기다리고 있어요 🥺", "바빴지? 지금이라도 딱 한 장! 📸")
         case 1:
-            return ("오늘의 약, 잊지 않았죠? 💊", "인증하면 핑핑이가 폴짝 뛰어요 💕")
+            return ("오늘의 약, 잊지 않았죠? 💊", "인증하면 \(Branding.characterName)가 폴짝 뛰어요 💕")
         default:
             return ("마지막으로 살짝 알려드려요 🌙", "늦어도 괜찮아요, 지금 인증해요! 💗")
         }

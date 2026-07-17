@@ -30,9 +30,9 @@ struct OnboardingView: View {
     private var greetingPage: some View {
         VStack(spacing: 24) {
             Spacer()
-            MascotView(mood: .happy, size: 170)
+            CharacterView(mood: .happy, size: 170)
                 .frame(height: 260)
-            Text("안녕! 나는 핑핑이야 💗")
+            Text("안녕! 나는 \(Branding.characterName)야 💗")
                 .font(Theme.rounded(26, weight: .bold))
                 .foregroundStyle(Theme.textPrimary)
             Text("매일 약 먹는 시간,\n혼자 챙기기 힘들었지?\n이제 내가 같이 챙겨줄게!")
@@ -105,7 +105,7 @@ struct OnboardingView: View {
 
             Spacer()
 
-            Text("시작하려면 알림 허용이 필요해요.\n핑핑이가 약 시간을 알려드려도 될까요? 🥺")
+            Text("시작하려면 알림 허용이 필요해요.\n\(Branding.characterName)가 약 시간을 알려드려도 될까요? 🥺")
                 .font(Theme.rounded(14, weight: .medium))
                 .foregroundStyle(Theme.textSecondary)
                 .multilineTextAlignment(.center)

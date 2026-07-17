@@ -34,7 +34,7 @@ struct RootView: View {
                 // 설정 로딩 중 스플래시.
                 ZStack {
                     Theme.softGradient.ignoresSafeArea()
-                    MascotView(mood: .idle, size: 160)
+                    CharacterView(mood: .idle, size: 160)
                 }
             }
         }

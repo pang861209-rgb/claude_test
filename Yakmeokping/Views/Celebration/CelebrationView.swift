@@ -29,7 +29,7 @@ struct CelebrationView: View {
 
             VStack(spacing: 14) {
                 // 칭찬의 주체는 핑핑이 — 등장하며 폴짝 뛴다.
-                MascotView(mood: mascotMood, size: 140)
+                CharacterView(mood: mascotMood, size: 140)
                     .frame(height: 210)
                     .scaleEffect(titleScale)
 

@@ -363,7 +363,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "약먹핑";
+				INFOPLIST_KEY_CFBundleDisplayName = "솜솜 약먹핑";
 				INFOPLIST_KEY_NSCameraUsageDescription = "약 먹은 사진을 찍어 복약을 인증하기 위해 카메라를 사용해요.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -393,7 +393,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "약먹핑";
+				INFOPLIST_KEY_CFBundleDisplayName = "솜솜 약먹핑";
 				INFOPLIST_KEY_NSCameraUsageDescription = "약 먹은 사진을 찍어 복약을 인증하기 위해 카메라를 사용해요.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -457,7 +457,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = YakmeokpingWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "약먹핑 위젯";
+				INFOPLIST_KEY_CFBundleDisplayName = "솜솜 약먹핑 위젯";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -482,7 +482,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = YakmeokpingWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "약먹핑 위젯";
+				INFOPLIST_KEY_CFBundleDisplayName = "솜솜 약먹핑 위젯";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

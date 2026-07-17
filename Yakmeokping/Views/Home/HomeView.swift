@@ -32,7 +32,7 @@ struct HomeView: View {
                             .popIn()
                     }
 
-                    MascotView(mood: mascotMood, size: 150)
+                    CharacterView(mood: mascotMood, size: 150)
                         .frame(height: 220)
                         .popIn(delay: 0.05)
 

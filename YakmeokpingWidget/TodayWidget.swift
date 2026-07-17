@@ -114,7 +114,7 @@ struct TodayWidgetView: View {
     // 잠금화면 직사각형: 슬롯별 상태 + 시간.
     private var rectangular: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text("약먹핑 💊")
+            Text("솜솜 약먹핑 💊")
                 .font(.system(size: 13, weight: .bold, design: .rounded))
             slotLine(emoji: "🌅", done: snap.morningDone, enabled: snap.morningEnabled, time: snap.morningTime)
             slotLine(emoji: "🌙", done: snap.eveningDone, enabled: snap.eveningEnabled, time: snap.eveningTime)
