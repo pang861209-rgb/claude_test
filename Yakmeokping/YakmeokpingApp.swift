@@ -2,12 +2,19 @@ import SwiftUI
 import SwiftData
 import UserNotifications
 
+/// 인증 대상: 어느 날짜의 어느 슬롯인지. 자정 넘김 귀속(기획 §10)을 위해 날짜를 함께 든다.
+struct VerifyTarget: Identifiable, Equatable {
+    let slot: Slot
+    let day: Date
+    var id: String { "\(slot.rawValue)-\(day.timeIntervalSince1970)" }
+}
+
 /// 알림 탭 시 어떤 슬롯을 인증해야 하는지 뷰 계층에 전달하는 라우터.
 @MainActor
 @Observable
 final class AppRouter {
-    /// 알림을 탭해 인증 화면을 열어야 할 슬롯. 처리 후 nil로 초기화.
-    var pendingVerifySlot: Slot?
+    /// 알림을 탭해 인증 화면을 열어야 할 대상. 처리 후 nil로 초기화.
+    var pendingVerify: VerifyTarget?
 }
 
 @main
@@ -66,13 +73,17 @@ final class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
         [.banner, .sound, .list]
     }
 
-    /// 알림 탭 → 해당 슬롯 인증 화면으로 직행.
+    /// 알림 탭 → 해당 날짜·슬롯 인증 화면으로 직행.
+    /// dayKey를 함께 파싱해, 자정을 넘겨 탭해도 원래 슬롯의 날짜로 인증된다 (기획 §10).
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse) async {
         let userInfo = response.notification.request.content.userInfo
         guard let slotRaw = userInfo["slot"] as? String, let slot = Slot(rawValue: slotRaw) else { return }
+        let day = (userInfo["dayKey"] as? String).flatMap {
+            NotificationScheduling.parseDayKey($0, calendar: Calendar.current)
+        } ?? Date()
         await MainActor.run {
-            router.pendingVerifySlot = slot
+            router.pendingVerify = VerifyTarget(slot: slot, day: day)
         }
     }
 }

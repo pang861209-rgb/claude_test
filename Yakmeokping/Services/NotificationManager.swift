@@ -66,6 +66,30 @@ final class NotificationManager {
         }
     }
 
+    /// 12회 배치 이후를 대비한 희소 후속 알림(+90m/+120m/+180m)을 예약한다.
+    /// "1시간 침묵 → 그날 통째로 잊음" 시나리오의 안전망.
+    func scheduleFollowUps(for slot: Slot, on day: Date, time: DateComponents, now: Date = Date()) {
+        guard let baseTime = NotificationScheduling.baseFireDate(for: slot, on: day, settings: time, calendar: calendar) else { return }
+
+        for (index, offset) in NotificationScheduling.followUpOffsets.enumerated() {
+            let fireDate = baseTime.addingTimeInterval(offset)
+            guard NotificationScheduling.isFuture(fireDate, now: now) else { continue }
+
+            let (title, body) = NotificationScheduling.followUpMessage(index: index)
+            let content = UNMutableNotificationContent()
+            content.title = title
+            content.body = body
+            content.sound = .default
+            content.interruptionLevel = .timeSensitive
+            content.userInfo = ["slot": slot.rawValue, "dayKey": NotificationScheduling.dayKey(day, calendar: calendar)]
+
+            let comps = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: fireDate)
+            let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)
+            let id = NotificationScheduling.followUpIdentifier(date: day, slot: slot, index: index, calendar: calendar)
+            center.add(UNNotificationRequest(identifier: id, content: content, trigger: trigger))
+        }
+    }
+
     /// 두 슬롯의 오늘치 알림을 설정에 맞게 (재)생성한다.
     /// 시각 변경/토글 변경 시 호출한다. 기존 예약은 모두 지우고 다시 예약한다.
     func rescheduleAll(settings: AppSettings, day: Date = Date(), now: Date = Date()) {
@@ -73,6 +97,7 @@ final class NotificationManager {
             cancelSlot(slot, on: day)
             guard settings.isEnabled(slot) else { continue }
             scheduleBatch(for: slot, on: day, time: settings.time(for: slot), seqStart: 0, now: now)
+            scheduleFollowUps(for: slot, on: day, time: settings.time(for: slot), now: now)
         }
     }
 
@@ -94,6 +119,8 @@ final class NotificationManager {
 
         let seqStart = NotificationScheduling.nextBatchStartSeq(baseTime: baseTime, now: now)
         scheduleBatch(for: slot, on: day, time: time, seqStart: seqStart, now: now)
+        // 후속 알림도 되살린다 (지난 것은 isFuture 가드가 걸러냄).
+        scheduleFollowUps(for: slot, on: day, time: time, now: now)
     }
 
     // MARK: - 취소

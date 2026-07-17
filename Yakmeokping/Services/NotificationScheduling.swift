@@ -13,10 +13,23 @@ enum NotificationScheduling {
     /// iOS 로컬 알림 예약 상한(64개)을 넘지 않도록 "열 때마다 연장" 전략을 쓴다.
     static let batchCount: Int = 12
 
+    /// 12회 이후의 희소 후속 알림 오프셋 (기준 시각 T로부터).
+    /// "1시간 침묵 → 그날 통째로 잊음"을 막는 안전망 (UX 리뷰 §05).
+    static let followUpOffsets: [TimeInterval] = [90 * 60, 120 * 60, 180 * 60]
+
     /// yyyyMMdd 형태의 날짜 키.
     static func dayKey(_ date: Date, calendar: Calendar) -> String {
         let c = calendar.dateComponents([.year, .month, .day], from: date)
         return String(format: "%04d%02d%02d", c.year ?? 0, c.month ?? 0, c.day ?? 0)
+    }
+
+    /// dayKey("20260714")를 해당 날짜의 자정 Date로 되돌린다.
+    static func parseDayKey(_ key: String, calendar: Calendar) -> Date? {
+        guard key.count == 8,
+              let y = Int(key.prefix(4)),
+              let m = Int(key.dropFirst(4).prefix(2)),
+              let d = Int(key.dropFirst(6)) else { return nil }
+        return calendar.date(from: DateComponents(year: y, month: m, day: d))
     }
 
     /// 단일 알림 식별자. 규칙: `{yyyyMMdd}-{slot}-{seq}`.
@@ -24,11 +37,19 @@ enum NotificationScheduling {
         "\(dayKey(date, calendar: calendar))-\(slot.rawValue)-\(seq)"
     }
 
-    /// 하루의 한 슬롯이 만들 수 있는 **모든** 식별자.
+    /// 후속(follow-up) 알림 식별자. 5분 배치와 네임스페이스를 분리해 충돌을 막는다.
+    /// 규칙: `{yyyyMMdd}-{slot}-fu-{index}`.
+    static func followUpIdentifier(date: Date, slot: Slot, index: Int, calendar: Calendar) -> String {
+        "\(dayKey(date, calendar: calendar))-\(slot.rawValue)-fu-\(index)"
+    }
+
+    /// 하루의 한 슬롯이 만들 수 있는 **모든** 식별자 (5분 배치 + 후속 알림).
     /// seq 0 ~ maxSeq 까지 넉넉히 생성해 슬롯 단위 일괄 취소에 사용한다.
     /// (한 슬롯당 하루 최대 예약 회차를 넉넉히 커버: 하루 12회 배치를 여러 번 연장해도 안전)
     static func allPossibleIdentifiers(date: Date, slot: Slot, calendar: Calendar, maxSeq: Int = 288) -> [String] {
-        (0...maxSeq).map { identifier(date: date, slot: slot, seq: $0, calendar: calendar) }
+        var ids = (0...maxSeq).map { identifier(date: date, slot: slot, seq: $0, calendar: calendar) }
+        ids += followUpOffsets.indices.map { followUpIdentifier(date: date, slot: slot, index: $0, calendar: calendar) }
+        return ids
     }
 
     /// 기준 시각(baseTime)으로부터 seqStart 회차부터 batchCount 개의 발화 시각.
@@ -64,6 +85,26 @@ enum NotificationScheduling {
             let minutes = seq * 5
             return ("\(minutes)분째 기다리는 중... 🥺", "딱 한 장이면 끝! 📸✨")
         }
+    }
+
+    /// 후속(follow-up) 알림 문구. 부담 없는 톤 유지.
+    static func followUpMessage(index: Int) -> (title: String, body: String) {
+        switch index {
+        case 0:
+            return ("핑핑이가 아직 기다리고 있어요 🥺", "바빴지? 지금이라도 딱 한 장! 📸")
+        case 1:
+            return ("오늘의 약, 잊지 않았죠? 💊", "인증하면 핑핑이가 폴짝 뛰어요 💕")
+        default:
+            return ("마지막으로 살짝 알려드려요 🌙", "늦어도 괜찮아요, 지금 인증해요! 💗")
+        }
+    }
+
+    /// 자정을 넘긴 새벽 시간대라면 "어제" 날짜를 반환한다 (저녁 약 귀속용, 기획 §10).
+    /// cutoffHour(기본 03시) 이전이면 어제, 그 외엔 nil.
+    static func lateNightAttributedDay(now: Date, cutoffHour: Int = 3, calendar: Calendar) -> Date? {
+        let hour = calendar.component(.hour, from: now)
+        guard hour < cutoffHour else { return nil }
+        return calendar.date(byAdding: .day, value: -1, to: calendar.startOfDay(for: now))
     }
 
     /// foreground 진입 시 "다음 배치"의 시작 회차를 계산한다.

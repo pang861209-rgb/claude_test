@@ -127,11 +127,74 @@ final class NotificationSchedulingTests: XCTestCase {
 
     // MARK: - allPossibleIdentifiers (슬롯 일괄 취소용)
 
-    func testAllPossibleIdentifiersCoversBatch() {
+    func testAllPossibleIdentifiersCoversBatchAndFollowUps() {
         let d = date(2026, 7, 14)
         let ids = NotificationScheduling.allPossibleIdentifiers(date: d, slot: .morning, calendar: calendar, maxSeq: 12)
         XCTAssertTrue(ids.contains("20260714-morning-0"))
         XCTAssertTrue(ids.contains("20260714-morning-11"))
-        XCTAssertEqual(ids.count, 13) // 0...12
+        // 후속 알림 식별자도 포함되어 인증 시 함께 취소된다.
+        XCTAssertTrue(ids.contains("20260714-morning-fu-0"))
+        XCTAssertTrue(ids.contains("20260714-morning-fu-2"))
+        XCTAssertEqual(ids.count, 13 + NotificationScheduling.followUpOffsets.count)
+    }
+
+    // MARK: - 후속(follow-up) 알림
+
+    func testFollowUpIdentifierFormat() {
+        let d = date(2026, 7, 14)
+        let id = NotificationScheduling.followUpIdentifier(date: d, slot: .evening, index: 1, calendar: calendar)
+        XCTAssertEqual(id, "20260714-evening-fu-1")
+    }
+
+    func testFollowUpOffsetsAreSparseAndOrdered() {
+        let offsets = NotificationScheduling.followUpOffsets
+        XCTAssertEqual(offsets.count, 3)
+        // 12회 배치(T+55분) 이후에 위치해야 한다.
+        XCTAssertTrue(offsets.allSatisfy { $0 > 55 * 60 })
+        XCTAssertEqual(offsets, offsets.sorted())
+    }
+
+    func testFollowUpMessagesAreDistinct() {
+        let titles = (0..<3).map { NotificationScheduling.followUpMessage(index: $0).title }
+        XCTAssertEqual(Set(titles).count, 3)
+    }
+
+    // MARK: - dayKey 파싱 (알림 탭 → 날짜 복원)
+
+    func testParseDayKeyRoundTrip() {
+        let d = date(2026, 7, 14)
+        let key = NotificationScheduling.dayKey(d, calendar: calendar)
+        let parsed = NotificationScheduling.parseDayKey(key, calendar: calendar)
+        XCTAssertEqual(parsed, calendar.startOfDay(for: d))
+    }
+
+    func testParseDayKeyRejectsInvalid() {
+        XCTAssertNil(NotificationScheduling.parseDayKey("2026714", calendar: calendar))   // 7자리
+        XCTAssertNil(NotificationScheduling.parseDayKey("abcdefgh", calendar: calendar))  // 숫자 아님
+    }
+
+    // MARK: - 자정 넘김 귀속 (기획 §10)
+
+    func testLateNightAttributedDayBeforeCutoff() {
+        // 새벽 00:30 → 어제
+        let now = date(2026, 7, 15, 0, 30)
+        let attributed = NotificationScheduling.lateNightAttributedDay(now: now, calendar: calendar)
+        XCTAssertEqual(attributed, date(2026, 7, 14))
+    }
+
+    func testLateNightAttributedDayJustBeforeCutoff() {
+        let now = date(2026, 7, 15, 2, 59)
+        XCTAssertEqual(NotificationScheduling.lateNightAttributedDay(now: now, calendar: calendar), date(2026, 7, 14))
+    }
+
+    func testLateNightAttributedDayAtCutoff() {
+        // 03:00 정각부터는 귀속 없음
+        let now = date(2026, 7, 15, 3, 0)
+        XCTAssertNil(NotificationScheduling.lateNightAttributedDay(now: now, calendar: calendar))
+    }
+
+    func testLateNightAttributedDayDaytime() {
+        let now = date(2026, 7, 15, 14, 0)
+        XCTAssertNil(NotificationScheduling.lateNightAttributedDay(now: now, calendar: calendar))
     }
 }

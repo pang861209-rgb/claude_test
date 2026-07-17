@@ -8,15 +8,11 @@ struct CameraPicker: UIViewControllerRepresentable {
     var onCancel: () -> Void
 
     func makeUIViewController(context: Context) -> UIImagePickerController {
+        // 카메라 가용성은 VerificationFlow가 사전에 확인한다.
+        // 앨범 폴백은 "실시간 촬영만 인증" 원칙(기획 §P0-3)에 어긋나므로 제공하지 않는다.
         let picker = UIImagePickerController()
-        // 카메라 사용 불가(시뮬레이터 등) 시 안전 처리.
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            picker.sourceType = .camera
-            picker.cameraCaptureMode = .photo
-        } else {
-            // 시뮬레이터 폴백: 촬영 불가 안내를 위해 photoLibrary는 쓰지 않고 취소 처리 유도.
-            picker.sourceType = .photoLibrary
-        }
+        picker.sourceType = .camera
+        picker.cameraCaptureMode = .photo
         picker.allowsEditing = false
         picker.delegate = context.coordinator
         return picker

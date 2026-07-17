@@ -11,6 +11,7 @@ struct SlotCardView: View {
     enum SlotState: Equatable {
         case disabled                       // 슬롯 off
         case waiting                        // 시간 전 대기
+        case soon                           // 시각 임박(T−2h) — 조기 인증 허용, 강조 없음
         case dueNow                         // 지금 먹을 시간 (미인증, 강조)
         case completed(at: Date, photoPath: String?)
     }
@@ -46,6 +47,29 @@ struct SlotCardView: View {
             Label(PraiseCopy.randomWaiting(), systemImage: "clock.fill")
                 .font(Theme.rounded(15))
                 .foregroundStyle(Theme.textSecondary)
+
+        case .soon:
+            // 조기 인증: 강조 없는 조용한 버튼. "일찍 먹는 날"을 자연스럽게 흡수한다.
+            VStack(alignment: .leading, spacing: 10) {
+                Text("조금 일찍 먹어도 괜찮아요 😊")
+                    .font(Theme.rounded(14))
+                    .foregroundStyle(Theme.textSecondary)
+                Button(action: onTapVerify) {
+                    HStack {
+                        Image(systemName: "camera")
+                        Text("미리 인증하기")
+                            .font(Theme.rounded(16, weight: .semibold))
+                    }
+                    .foregroundStyle(Theme.mainPink)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 13)
+                    .background(
+                        RoundedRectangle(cornerRadius: Theme.buttonCornerRadius, style: .continuous)
+                            .stroke(Theme.mainPink, lineWidth: 1.6)
+                    )
+                }
+                .buttonStyle(.bouncy)
+            }
 
         case .dueNow:
             Button(action: onTapVerify) {
