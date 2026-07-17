@@ -42,9 +42,11 @@ struct DayDetailView: View {
 
             if completed, let record {
                 if let at = record.completedAt {
-                    Text("\(timeString(at)) 인증 완료 💗")
+                    Text(record.isLate
+                         ? "\(timeString(at)) 인증 · 조금 늦었지만 해냈어요 💜"
+                         : "\(timeString(at)) 인증 완료 💗")
                         .font(Theme.rounded(14))
-                        .foregroundStyle(Theme.mainPink)
+                        .foregroundStyle(record.isLate ? Theme.pointPurple : Theme.mainPink)
                 }
                 if let path = record.photoPath, let image = PhotoStorage.load(relativePath: path) {
                     Image(uiImage: image)

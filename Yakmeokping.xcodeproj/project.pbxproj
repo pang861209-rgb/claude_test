@@ -6,10 +6,25 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		1A000000000000000000002C /* YakmeokpingWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000020 /* YakmeokpingWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		1A0000000000000000000006 /* Yakmeokping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yakmeokping.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A0000000000000000000007 /* YakmeokpingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YakmeokpingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A0000000000000000000020 /* YakmeokpingWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = YakmeokpingWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		1A000000000000000000002D /* Exceptions for "YakmeokpingWidget" folder */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1A0000000000000000000022 /* YakmeokpingWidget */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		1A0000000000000000000008 /* Yakmeokping */ = {
@@ -22,7 +37,29 @@
 			path = YakmeokpingTests;
 			sourceTree = "<group>";
 		};
+		1A0000000000000000000021 /* YakmeokpingWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				1A000000000000000000002D /* Exceptions for "YakmeokpingWidget" folder */,
+			);
+			path = YakmeokpingWidget;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		1A000000000000000000002B /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				1A000000000000000000002C /* YakmeokpingWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		1A000000000000000000000B /* Frameworks */ = {
@@ -39,6 +76,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1A0000000000000000000024 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -46,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				1A0000000000000000000008 /* Yakmeokping */,
+				1A0000000000000000000021 /* YakmeokpingWidget */,
 				1A0000000000000000000009 /* YakmeokpingTests */,
 				1A0000000000000000000003 /* Products */,
 			);
@@ -56,6 +101,7 @@
 			children = (
 				1A0000000000000000000006 /* Yakmeokping.app */,
 				1A0000000000000000000007 /* YakmeokpingTests.xctest */,
+				1A0000000000000000000020 /* YakmeokpingWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -70,10 +116,12 @@
 				1A000000000000000000000A /* Sources */,
 				1A000000000000000000000B /* Frameworks */,
 				1A000000000000000000000C /* Resources */,
+				1A000000000000000000002B /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				1A000000000000000000002A /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				1A0000000000000000000008 /* Yakmeokping */,
@@ -82,6 +130,26 @@
 			productName = Yakmeokping;
 			productReference = 1A0000000000000000000006 /* Yakmeokping.app */;
 			productType = "com.apple.product-type.application";
+		};
+		1A0000000000000000000022 /* YakmeokpingWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A0000000000000000000026 /* Build configuration list for PBXNativeTarget "YakmeokpingWidget" */;
+			buildPhases = (
+				1A0000000000000000000023 /* Sources */,
+				1A0000000000000000000024 /* Frameworks */,
+				1A0000000000000000000025 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				1A0000000000000000000021 /* YakmeokpingWidget */,
+			);
+			name = YakmeokpingWidget;
+			productName = YakmeokpingWidget;
+			productReference = 1A0000000000000000000020 /* YakmeokpingWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 		1A0000000000000000000005 /* YakmeokpingTests */ = {
 			isa = PBXNativeTarget;
@@ -120,6 +188,9 @@
 						CreatedOnToolsVersion = 16.0;
 						TestTargetID = 1A0000000000000000000004;
 					};
+					1A0000000000000000000022 = {
+						CreatedOnToolsVersion = 16.0;
+					};
 				};
 			};
 			buildConfigurationList = 1A000000000000000000000F /* Build configuration list for PBXProject "Yakmeokping" */;
@@ -140,12 +211,20 @@
 			targets = (
 				1A0000000000000000000004 /* Yakmeokping */,
 				1A0000000000000000000005 /* YakmeokpingTests */,
+				1A0000000000000000000022 /* YakmeokpingWidget */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1A000000000000000000000C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1A0000000000000000000025 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -169,6 +248,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1A0000000000000000000023 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -176,6 +262,11 @@
 			isa = PBXTargetDependency;
 			target = 1A0000000000000000000004 /* Yakmeokping */;
 			targetProxy = 1A0000000000000000000019 /* PBXContainerItemProxy */;
+		};
+		1A000000000000000000002A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1A0000000000000000000022 /* YakmeokpingWidget */;
+			targetProxy = 1A0000000000000000000029 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -186,6 +277,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 1A0000000000000000000004;
 			remoteInfo = Yakmeokping;
+		};
+		1A0000000000000000000029 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1A0000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1A0000000000000000000022;
+			remoteInfo = YakmeokpingWidget;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -351,6 +449,56 @@
 			};
 			name = Release;
 		};
+		1A0000000000000000000027 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = YakmeokpingWidget/YakmeokpingWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = YakmeokpingWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "약먹핑 위젯";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yakmeokping.app.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		1A0000000000000000000028 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = YakmeokpingWidget/YakmeokpingWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = YakmeokpingWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "약먹핑 위젯";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yakmeokping.app.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -377,6 +525,15 @@
 			buildConfigurations = (
 				1A0000000000000000000016 /* Debug */,
 				1A0000000000000000000017 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1A0000000000000000000026 /* Build configuration list for PBXNativeTarget "YakmeokpingWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A0000000000000000000027 /* Debug */,
+				1A0000000000000000000028 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

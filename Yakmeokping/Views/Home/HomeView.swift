@@ -102,7 +102,7 @@ struct HomeView: View {
     private func state(for slot: Slot) -> SlotCardView.SlotState {
         guard settings.isEnabled(slot) else { return .disabled }
         if let record = records[slot], record.status == .completed, let at = record.completedAt {
-            return .completed(at: at, photoPath: record.photoPath)
+            return .completed(at: at, photoPath: record.photoPath, late: record.isLate)
         }
         // pending: 시간 도래 여부 (T−2h부터는 조기 인증 허용)
         if let base = NotificationScheduling.baseFireDate(for: slot, on: now, settings: settings.time(for: slot), calendar: store.calendar) {
@@ -149,6 +149,9 @@ struct HomeView: View {
     private func refresh() {
         records = store.ensureRecords(for: now)
         streak = store.currentStreak(asOf: now)
+        // 위젯에 오늘 상태 게시.
+        WidgetBridge.publish(records: records, streak: streak, settings: settings,
+                             calendar: store.calendar, now: now)
     }
 
     private var todayString: String {

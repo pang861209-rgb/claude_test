@@ -97,6 +97,10 @@ final class MedicationStore {
         }()
 
         record.markCompleted(photoPath: path, at: now)
+        // 지연 완료 판정용 예정 시각 스냅샷 (설정을 나중에 바꿔도 판정이 흔들리지 않도록).
+        let settings = loadOrCreateSettings()
+        record.scheduledAt = NotificationScheduling.baseFireDate(
+            for: slot, on: start, settings: settings.time(for: slot), calendar: calendar)
         try? context.save()
 
         NotificationManager.shared.cancelSlot(slot, on: start)

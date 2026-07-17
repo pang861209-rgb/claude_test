@@ -17,6 +17,14 @@
 | 카메라 | UIImagePickerController(camera) — 실시간 촬영만, 앨범 선택 불가 |
 | 빌드 | **Xcode 16+** (file system synchronized groups 사용, objectVersion 77) |
 
+## 구현된 기능 (P1)
+
+- **잠금화면·홈 위젯** (`YakmeokpingWidget` 타겟) — 잠금화면 원형/직사각형 + 홈 small. 아침/저녁 하트 상태·시간·streak 표시. App Group(`group.com.yakmeokping.app`) UserDefaults 스냅샷으로 앱과 동기화, 상태 변화 시 즉시 갱신 + 30분 자체 갱신.
+- **앱 아이콘** — 오리지널 핑핑이 얼굴 (스크립트 생성, 1024px).
+- **지연 완료 뱃지** — 예정 +2시간 이후 인증 시 "늦어도 해냈어요! 💜" (칭찬 톤 유지, 완료 시점의 예정 시각 스냅샷으로 판정).
+- **Dynamic Type** — 모든 폰트가 시스템 글자 크기 설정을 따라 스케일.
+- **커스텀 알림 사운드** — 밝은 벨 아르페지오 (`notification_chime.wav`, 스크립트 합성).
+
 ## 구현된 기능 (P0.5 — 루프 구멍 메우기)
 
 UX 아키텍처 리뷰(`docs/UX-ARCHITECTURE.md`) 반영분:

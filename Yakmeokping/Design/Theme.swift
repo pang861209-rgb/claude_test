@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// 앱 전역 디자인 토큰 (기획서 §9).
 /// 특정 캐릭터 IP를 쓰지 않고 핑크·파스텔·하트 무드만 구현.
@@ -29,9 +30,23 @@ enum Theme {
     static let cardCornerRadius: CGFloat = 28
     static let buttonCornerRadius: CGFloat = 24
 
-    // MARK: - 폰트 (SF Pro Rounded)
+    // MARK: - 폰트 (SF Pro Rounded, Dynamic Type 대응)
+    /// 시스템 글자 크기 설정을 따라 스케일되는 라운디드 폰트.
+    /// 고정 pt 대신 UIFontMetrics로 감싸 접근성(큰 글씨) 설정을 존중한다.
     static func rounded(_ size: CGFloat, weight: Font.Weight = .semibold) -> Font {
-        .system(size: size, weight: weight, design: .rounded)
+        let uiWeight: UIFont.Weight
+        switch weight {
+        case .regular: uiWeight = .regular
+        case .medium: uiWeight = .medium
+        case .bold: uiWeight = .bold
+        case .heavy: uiWeight = .heavy
+        default: uiWeight = .semibold
+        }
+        var font = UIFont.systemFont(ofSize: size, weight: uiWeight)
+        if let descriptor = font.fontDescriptor.withDesign(.rounded) {
+            font = UIFont(descriptor: descriptor, size: size)
+        }
+        return Font(UIFontMetrics(forTextStyle: .body).scaledFont(for: font))
     }
 }
 

@@ -31,15 +31,23 @@ Xcode는 애플의 무료 앱 제작 프로그램이에요.
 1. 메뉴바 **Xcode → Settings...** (`⌘,`)
 2. **Accounts** 탭 → 왼쪽 아래 **+** → **Apple ID** → 로그인
 
-## 5. 서명 설정 (3분)
+## 5. 서명 설정 (5분)
+
+앱과 위젯, **타겟 2개 모두** 서명해야 해요.
 
 1. 왼쪽 파일 목록 맨 위 파란 아이콘 **Yakmeokping** 클릭
 2. **TARGETS → Yakmeokping** 선택 → **Signing & Capabilities** 탭
 3. **Team** = 본인 이름 (Personal Team)
 4. **Bundle Identifier**를 나만의 것으로 변경 — 예: `com.내이름.yakmeokping`
+5. **TARGETS → YakmeokpingWidget**도 선택해서 **Team**을 똑같이 지정하고,
+   Bundle Identifier를 앱과 짝이 되게 변경 — 예: `com.내이름.yakmeokping.widget`
 
 > ⚠️ 빨간 오류가 나면 대부분 **Time Sensitive Notifications** 때문이에요 (무료 계정 제한).
-> 같은 화면에서 해당 항목의 ✕를 눌러 지우면 해결돼요. 알림은 정상 동작해요.
+> Yakmeokping 타겟 화면에서 해당 항목의 ✕를 눌러 지우면 해결돼요. 알림은 정상 동작해요.
+>
+> ⚠️ **App Groups** 관련 오류가 나면: 두 타겟 모두 App Groups 항목에서
+> `group.com.yakmeokping.app`이 체크돼 있는지 확인하세요. 그래도 안 되면 두 타겟 모두
+> App Groups 항목을 ✕로 지워도 앱은 정상 동작해요 (위젯의 상태 표시만 비어 보임).
 
 ## 6. 아이폰 연결 + 개발자 모드 (5분)
 

@@ -10,6 +10,9 @@ final class NotificationManager {
     private let center = UNUserNotificationCenter.current()
     private var calendar: Calendar { Calendar.current }
 
+    /// 커스텀 알림 사운드 (번들의 벨 아르페지오). 파일이 없으면 iOS가 기본음으로 대체한다.
+    private static let chimeSound = UNNotificationSound(named: UNNotificationSoundName("notification_chime.wav"))
+
     private init() {}
 
     // MARK: - 권한
@@ -53,7 +56,7 @@ final class NotificationManager {
             let content = UNMutableNotificationContent()
             content.title = title
             content.body = body
-            content.sound = .default
+            content.sound = Self.chimeSound
             content.interruptionLevel = .timeSensitive // 집중 모드에서도 표시
             content.userInfo = ["slot": slot.rawValue, "dayKey": NotificationScheduling.dayKey(day, calendar: calendar)]
 
@@ -79,7 +82,7 @@ final class NotificationManager {
             let content = UNMutableNotificationContent()
             content.title = title
             content.body = body
-            content.sound = .default
+            content.sound = Self.chimeSound
             content.interruptionLevel = .timeSensitive
             content.userInfo = ["slot": slot.rawValue, "dayKey": NotificationScheduling.dayKey(day, calendar: calendar)]
 

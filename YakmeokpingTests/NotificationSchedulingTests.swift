@@ -197,4 +197,27 @@ final class NotificationSchedulingTests: XCTestCase {
         let now = date(2026, 7, 15, 14, 0)
         XCTAssertNil(NotificationScheduling.lateNightAttributedDay(now: now, calendar: calendar))
     }
+
+    // MARK: - 지연 완료 판정 (P1)
+
+    func testIsLateFalseWithinThreshold() {
+        let record = MedicationRecord(date: date(2026, 7, 14), slot: .morning)
+        record.markCompleted(photoPath: "photos/x.jpg", at: date(2026, 7, 14, 9, 59))
+        record.scheduledAt = date(2026, 7, 14, 8, 0)
+        XCTAssertFalse(record.isLate) // +1시간 59분 → 정시 완료
+    }
+
+    func testIsLateTrueBeyondThreshold() {
+        let record = MedicationRecord(date: date(2026, 7, 14), slot: .morning)
+        record.markCompleted(photoPath: "photos/x.jpg", at: date(2026, 7, 14, 10, 1))
+        record.scheduledAt = date(2026, 7, 14, 8, 0)
+        XCTAssertTrue(record.isLate) // +2시간 1분 → 지연 완료
+    }
+
+    func testIsLateFalseWithoutSnapshot() {
+        // 과거 데이터(스냅샷 없음)는 지연으로 판정하지 않는다.
+        let record = MedicationRecord(date: date(2026, 7, 14), slot: .morning)
+        record.markCompleted(photoPath: "photos/x.jpg", at: date(2026, 7, 14, 23, 0))
+        XCTAssertFalse(record.isLate)
+    }
 }

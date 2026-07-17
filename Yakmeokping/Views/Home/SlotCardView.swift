@@ -13,7 +13,7 @@ struct SlotCardView: View {
         case waiting                        // 시간 전 대기
         case soon                           // 시각 임박(T−2h) — 조기 인증 허용, 강조 없음
         case dueNow                         // 지금 먹을 시간 (미인증, 강조)
-        case completed(at: Date, photoPath: String?)
+        case completed(at: Date, photoPath: String?, late: Bool)
     }
 
     var body: some View {
@@ -88,7 +88,7 @@ struct SlotCardView: View {
             }
             .buttonStyle(.bouncy)
 
-        case let .completed(at, photoPath):
+        case let .completed(at, photoPath, late):
             HStack(spacing: 14) {
                 if let path = photoPath, let image = PhotoStorage.load(relativePath: path) {
                     Image(uiImage: image)
@@ -98,9 +98,10 @@ struct SlotCardView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 }
                 VStack(alignment: .leading, spacing: 2) {
-                    Label("완료했어요! 💗", systemImage: "checkmark.seal.fill")
+                    // 지연 완료도 칭찬 톤 유지 — "늦음"을 벌하지 않고 해낸 것을 축하한다.
+                    Label(late ? "늦어도 해냈어요! 💜" : "완료했어요! 💗", systemImage: "checkmark.seal.fill")
                         .font(Theme.rounded(16, weight: .bold))
-                        .foregroundStyle(Theme.mainPink)
+                        .foregroundStyle(late ? Theme.pointPurple : Theme.mainPink)
                     Text("\(completedTimeString(at)) 인증")
                         .font(Theme.rounded(13))
                         .foregroundStyle(Theme.textSecondary)

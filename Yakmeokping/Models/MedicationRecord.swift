@@ -51,6 +51,10 @@ final class MedicationRecord {
     /// 앱 내부 저장소(Documents) 기준 상대 경로. 미완료면 nil.
     var photoPath: String?
 
+    /// 완료 시점의 "예정 시각" 스냅샷. 지연 완료 판정에 사용 (설정을 나중에 바꿔도 판정 불변).
+    /// 옵셔널 추가 필드라 기존 데이터와 경량 마이그레이션 호환.
+    var scheduledAt: Date?
+
     var slot: Slot {
         get { Slot(rawValue: slotRaw) ?? .morning }
         set { slotRaw = newValue.rawValue }
@@ -74,5 +78,14 @@ final class MedicationRecord {
         self.status = .completed
         self.photoPath = photoPath
         self.completedAt = date
+    }
+
+    /// 지연 완료 임계값: 예정 시각 +2시간.
+    static let lateThreshold: TimeInterval = 2 * 60 * 60
+
+    /// 지연 완료 여부. 예정 시각 스냅샷이 없으면(과거 데이터) 판정하지 않는다.
+    var isLate: Bool {
+        guard let completedAt, let scheduledAt else { return false }
+        return completedAt.timeIntervalSince(scheduledAt) > Self.lateThreshold
     }
 }
